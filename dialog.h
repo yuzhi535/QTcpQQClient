@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QDebug>
 #include "mainwindow.h"
+#include <QFile>
 
 namespace Ui {
 class Dialog;
@@ -19,10 +20,13 @@ public:
 
 public slots:
     void on_pushButton_clicked();
+    void on_pushButton_2_clicked();
+    void on_toolButton_clicked();
 
 private:
     Ui::Dialog *ui;
     MainWindow* w;
+//    Register* register;
 };
 
 #endif // DIALOG_H

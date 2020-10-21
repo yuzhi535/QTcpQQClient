@@ -7,6 +7,7 @@ Dialog::Dialog(QWidget *parent) :
 {
     ui->setupUi(this);
     w = new MainWindow();
+    register = new Risgister();
 }
 
 Dialog::~Dialog()
@@ -17,6 +18,16 @@ Dialog::~Dialog()
 void Dialog::on_pushButton_clicked()
 {
     qDebug() << "success";
-    this->close();   //做关闭的动画效果
+    close();
     w->show();       //做打开的动画效果
+}
+
+void Dialog::on_pushButton_2_clicked()
+{
+    close();
+}
+
+void Dialog::on_toolButton_clicked()
+{
+
 }

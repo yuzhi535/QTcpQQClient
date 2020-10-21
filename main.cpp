@@ -5,8 +5,8 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 //    MainWindow w;
-//    w.show();
-    Dialog* dialog = new Dialog();
-    dialog->show();
+    Dialog dialog;
+//    QObject::connect(&dialog, &QDialog::close, &w, &MainWindow::show);
+    dialog.show();
     return a.exec();
 }
