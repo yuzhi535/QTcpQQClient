@@ -39,6 +39,7 @@ void Dialog::on_pushButton_clicked()
         if (socket->state() == QAbstractSocket::ConnectedState)
         {
             connect(socket, &QAbstractSocket::readyRead, w, &MainWindow::addInfo);
+            connect(socket, &QAbstractSocket::disconnected, w, &MainWindow::warn);
             qDebug() << "success";
             close();
             w->show();       //做打开的动画效果

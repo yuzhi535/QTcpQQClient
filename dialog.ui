@@ -102,7 +102,7 @@ font: 29 18pt &quot;Noto Sans CJK SC DemiLight&quot;;</string>
         <string/>
        </property>
        <property name="placeholderText">
-        <string>勿用简单用户名</string>
+        <string>请不要用简单用户名</string>
        </property>
       </widget>
      </item>
@@ -131,7 +131,7 @@ font: 29 18pt &quot;Noto Sans CJK SC DemiLight&quot;;</string>
         <enum>QLineEdit::Password</enum>
        </property>
        <property name="placeholderText">
-        <string>请不要用即简单密码</string>
+        <string>请不要用简单密码</string>
        </property>
       </widget>
      </item>
