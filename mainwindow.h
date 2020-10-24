@@ -9,6 +9,7 @@
 #include <QTextEdit>
 #include <QProgressBar>
 #include <QGridLayout>
+#include "mytcpclient.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -22,9 +23,15 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void setSocket(MyTcpClient*& client);
+
+signals:
 
 public slots:
-    void open();
+    void addInfo();
+    void on_button_1_clicked();
+
+
 
 private:
     Ui::MainWindow *ui;
@@ -37,5 +44,8 @@ private:
     QPushButton* button_2;
     QProgressBar* progressBar;
     QGridLayout* grid;
+
+    MyTcpClient* myClient;
+
 };
 #endif // MAINWINDOW_H

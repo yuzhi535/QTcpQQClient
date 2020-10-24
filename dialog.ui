@@ -10,6 +10,18 @@
     <height>370</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>561</width>
+    <height>370</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>561</width>
+    <height>370</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
@@ -76,7 +88,23 @@ font: 29 18pt &quot;Noto Sans CJK SC DemiLight&quot;;</string>
       </widget>
      </item>
      <item row="0" column="2">
-      <widget class="QLineEdit" name="lineEdit"/>
+      <widget class="QLineEdit" name="lineEdit">
+       <property name="whatsThis">
+        <string>用户名</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(0, 0, 0);</string>
+       </property>
+       <property name="inputMask">
+        <string/>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="placeholderText">
+        <string>勿用简单用户名</string>
+       </property>
+      </widget>
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label_3">
@@ -96,8 +124,14 @@ font: 29 18pt &quot;Noto Sans CJK SC DemiLight&quot;;</string>
      </item>
      <item row="1" column="2">
       <widget class="QLineEdit" name="lineEdit_2">
+       <property name="styleSheet">
+        <string notr="true">color: rgb(0, 0, 0);</string>
+       </property>
        <property name="echoMode">
         <enum>QLineEdit::Password</enum>
+       </property>
+       <property name="placeholderText">
+        <string>请不要用即简单密码</string>
        </property>
       </widget>
      </item>
@@ -144,41 +178,8 @@ font: 29 18pt &quot;Noto Sans CJK SC DemiLight&quot;;</string>
      </item>
     </layout>
    </widget>
-   <widget class="QToolButton" name="toolButton">
-    <property name="geometry">
-     <rect>
-      <x>490</x>
-      <y>180</y>
-      <width>41</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: rgb(0, 0, 0);</string>
-    </property>
-    <property name="text">
-     <string>注册</string>
-    </property>
-   </widget>
   </widget>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>toolButton</sender>
-   <signal>clicked()</signal>
-   <receiver>Dialog</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>510</x>
-     <y>335</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>280</x>
-     <y>184</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
