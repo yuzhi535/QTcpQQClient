@@ -16,6 +16,11 @@ MainWindow::MainWindow(QWidget *parent)
     button_2 = new QPushButton(this);
     button_3 = new QPushButton(this);
     button_4 = new QPushButton(this);
+    button_1->setAccessibleName("button_1");
+    button_2->setAccessibleName("button_2");
+    button_3->setAccessibleName("button_3");
+    button_4->setAccessibleName("button_4");
+
     text = new QTextEdit(this);
 
     button_1->setText(QString(tr("发送")));
@@ -52,11 +57,90 @@ void MainWindow::setSocket(MyTcpClient *& client)
     myClient = client;
 }
 
+QString MainWindow::intToString(int num)
+{
+    QString re;
+    while (num)
+    {
+        re = (char)(num % 10) + 48 + re;
+        num /= 10;
+    }
+    return re;
+}
+
+void MainWindow::createFile(QByteArray& data, QString suffix)
+{
+    QString th = myClient->getName();
+    th = QString("/") + th;
+    QString path = QDir::currentPath() + th;   //存储到本地文件夹
+    path = QDir::toNativeSeparators(path);
+    QDir dir(path);
+    if (!dir.exists())
+        dir.mkpath(path);
+    QTime time(QTime::currentTime());
+    QString curr = intToString(QTime(0, 0, 0).secsTo(time));
+    curr = "/" + curr;
+    QString name(path + curr + suffix);
+    QFile file;                                  //创建新文件
+    name = QDir::toNativeSeparators(name);
+    file.setFileName(name);
+    file.open(QIODevice::ReadOnly);
+    if (!file.exists())
+    {
+        file.close();
+        file.open(QIODevice::ReadWrite);
+    }
+    if (file.isOpen())
+    {
+        file.write(data);
+        file.close();
+    }
+}
+
 void MainWindow::addInfo()
 {
-    QString str = myClient->readAll();
-    str.remove('\b');
-    list_1->addItem(str);
+    QByteArray data = myClient->readAll();
+    if (!data.isNull())
+    {
+        QString str = data;
+        if (str.at(0) != '\r')
+        {
+            str.remove('\b');
+            list_1->addItem(str);
+            createFile(data, "txt");
+        }
+        else if (str.at(0) == '\r')
+        {
+            int size = 0;
+            for (int i = 1; i < data.size() && data.at(i) != '\r'; ++i)
+            {
+                size = size * 10 - '0' + data.at(i);
+            }
+            qDebug() << size;
+            data.clear();
+            QThread::msleep(100);
+            bool flag = true;
+            QTime time(QTime::currentTime());
+            while (size > data.size())
+            {
+                data += myClient->readAll();
+                if (time.secsTo(QTime::currentTime()) > 3)
+                {
+                    QMessageBox::information(this, QString("通知"), QString("<h1>图片接收失败</h1>"));
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag)
+            {
+                QMessageBox::information(this, QString("通知"), QString("<h1>您收到一张图片</h1>"));
+                //创建文件
+                createFile(data, ".png");
+                showImg(data);
+            }
+        }
+    }
+
 }
 
 void MainWindow::on_button_1_clicked()
@@ -75,7 +159,7 @@ void MainWindow::warn()
 
 void MainWindow::on_button_3_clicked()
 {
-    auto file = QFileDialog::getOpenFileName(this, tr("选择图片"), "*.jpg");
+    auto file = QFileDialog::getOpenFileName(this, tr("选择图片"), "../", tr("images(*.png)"));
     if (!file.isEmpty())
     {
         img.load(file);
@@ -94,6 +178,22 @@ void MainWindow::on_button_3_clicked()
     }
 }
 
+void MainWindow::showImg(QByteArray data)
+{
+    img.loadFromData(data, "JPG");
+    QBuffer buffer;
+    buffer.open(QIODevice::ReadWrite);
+    img.save(&buffer, "PNG");                 //在buffer中存储这个图片，后缀是.png
+
+    QByteArray dataArray;
+    dataArray.append(buffer.data());
+
+    QGraphicsScene* scene = new QGraphicsScene;
+    scene->addPixmap(img);
+    view->setScene(scene);
+    view->show();
+}
+
 void MainWindow::on_button_4_clicked()
 {
     if (flag)
@@ -104,7 +204,7 @@ void MainWindow::on_button_4_clicked()
             QPixmap tmp = img;
             QBuffer buffer(&datArray);
             buffer.open(QIODevice::ReadWrite);
-            tmp.save(&buffer, "JPG");                //做到jpg格式的传输
+            tmp.save(&buffer, "PNG");                //做到PNG格式的传输
             auto len = datArray.size();
             QByteArray s;
             while (len)                             //先发送图片大小，让服务端做好准备

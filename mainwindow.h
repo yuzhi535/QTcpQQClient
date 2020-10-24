@@ -15,6 +15,7 @@
 #include <QFileDialog>
 #include <QPixmap>
 #include <QBuffer>
+#include <QThread>
 
 
 QT_BEGIN_NAMESPACE
@@ -29,6 +30,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void setSocket(MyTcpClient*& client);
+    void createFile(QByteArray& data, QString suffix);
+    QString intToString(int num);
+    void showImg(QByteArray img);
 
 signals:
 

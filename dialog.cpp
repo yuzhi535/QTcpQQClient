@@ -11,6 +11,7 @@ Dialog::Dialog(QWidget *parent) :
 
     w = new MainWindow();
     socket = new MyTcpClient();
+    socket->setReadBufferSize(0);
     w->setSocket(socket);
 }
 
@@ -18,13 +19,13 @@ Dialog::Dialog(QWidget *parent) :
 Dialog::~Dialog()
 {
     delete ui;
-    std::cout << "exit(0)" << std::endl;
 }
 
 void Dialog::sleep(qint32 sec)
 {
     QTime time1 = QTime::currentTime().addMSecs(sec);
-    while (QTime::currentTime() < time1) {
+    while (QTime::currentTime() < time1)
+    {
         QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
     }
 }
@@ -32,7 +33,6 @@ void Dialog::sleep(qint32 sec)
 void Dialog::on_pushButton_clicked()
 {
     socket->connectToHost(QHostAddress(ip), port);
-//    sleep(100);
     if (socket->state() == QAbstractSocket::ConnectingState)
     {
         sleep(100);
