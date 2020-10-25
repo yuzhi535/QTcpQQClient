@@ -103,13 +103,13 @@ void MainWindow::addInfo()
     if (!data.isNull())
     {
         QString str = data;
-        if (str.at(0) != '\r')
+        if (!str.contains('\r'))
         {
             str.remove('\b');
             list_1->addItem(str);
             createFile(data, "txt");
         }
-        else if (str.at(0) == '\r')
+        else if (str.contains('\r'))
         {
             int size = 0;
             for (int i = 1; i < data.size() && data.at(i) != '\r'; ++i)
@@ -216,6 +216,7 @@ void MainWindow::on_button_4_clicked()
             s.append('\r');
 
             myClient->write(s);
+            myClient->waitForBytesWritten();
             datArray.append(buffer.data());
             myClient->write(datArray);
         }
