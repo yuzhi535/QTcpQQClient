@@ -103,40 +103,29 @@ void MainWindow::addInfo()
     if (!data.isNull())
     {
         QString str = data;
-        if (!str.contains('\r'))
+        if (str.at(0) != '\r')
         {
             str.remove('\b');
             list_1->addItem(str);
             createFile(data, "txt");
         }
-        else if (str.contains('\r'))
+        else if (str.at(0) == '\r')
         {
-            int size = 0;
-            for (int i = 1; i < data.size() && data.at(i) != '\r'; ++i)
+            int size = data.size();;
+            int i;
+            for(i = 1; i < data.size() && data.at(i) != '\r'; ++i);
+            size = data.mid(1, i - 1).toInt();
+            qDebug() << "size=" << size;
+            QByteArray file = data.mid(i + 1);
+            qDebug() << "filesize=" << file.size();
+            if (size > file.size())
             {
-                size = size * 10 - '0' + data.at(i);
+                QMessageBox::information(this, QString("通知"), QString("<h1>图片接收失败</h1>"));
             }
-            qDebug() << size;
-            data.clear();
-            QThread::msleep(100);
-            bool flag = true;
-            QTime time(QTime::currentTime());
-            while (size > data.size())
+            else
             {
-                data += myClient->readAll();
-                if (time.secsTo(QTime::currentTime()) > 3)
-                {
-                    QMessageBox::information(this, QString("通知"), QString("<h1>图片接收失败</h1>"));
-                    flag = false;
-                    break;
-                }
-            }
-            if (flag)
-            {
-                QMessageBox::information(this, QString("通知"), QString("<h1>您收到一张图片</h1>"));
-                //创建文件
-                createFile(data, ".png");
-                showImg(data);
+                createFile(file, ".png");
+                showImg(file);
             }
         }
     }
@@ -180,7 +169,7 @@ void MainWindow::on_button_3_clicked()
 
 void MainWindow::showImg(QByteArray data)
 {
-    img.loadFromData(data, "JPG");
+    img.loadFromData(data, "PNG");
     QBuffer buffer;
     buffer.open(QIODevice::ReadWrite);
     img.save(&buffer, "PNG");                 //在buffer中存储这个图片，后缀是.png
@@ -215,10 +204,8 @@ void MainWindow::on_button_4_clicked()
             s.insert(0, '\r');
             s.append('\r');
 
-            myClient->write(s);
+            myClient->write(s + buffer.data());
             myClient->waitForBytesWritten();
-            datArray.append(buffer.data());
-            myClient->write(datArray);
         }
         else
         {
