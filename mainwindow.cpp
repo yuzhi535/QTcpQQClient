@@ -107,7 +107,7 @@ void MainWindow::addInfo()
         {
             str.remove('\b');
             list_1->addItem(str);
-            createFile(data, "txt");
+            createFile(data, ".txt");
         }
         else if (str.at(0) == '\r')
         {
