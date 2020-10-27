@@ -45,8 +45,12 @@ void Dialog::on_pushButton_clicked()
             close();
             w->show();       //做打开的动画效果
 
+
+            QString name = ui->lineEdit->text();
+            socket->setName(name);
+
             QString login("\b");
-            login += ui->lineEdit->text() + "\b";
+            login += name + "\b";
             login += ui->lineEdit_2->text() + "\b";
             socket->write(login.toUtf8());
         }

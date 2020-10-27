@@ -16,6 +16,7 @@
 #include <QPixmap>
 #include <QBuffer>
 #include <QThread>
+#include <QDate>
 
 
 QT_BEGIN_NAMESPACE
@@ -33,6 +34,8 @@ public:
     void createFile(QByteArray& data, QString suffix);
     QString intToString(int num);
     void showImg(QByteArray img);
+//    void setName()
+
 
 signals:
 

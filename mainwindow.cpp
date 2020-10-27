@@ -71,28 +71,29 @@ QString MainWindow::intToString(int num)
 void MainWindow::createFile(QByteArray& data, QString suffix)
 {
     QString th = myClient->getName();
-    th = QString("/") + th;
+    qDebug() << th;
+    th = QString("/users/") + th;
     QString path = QDir::currentPath() + th;   //存储到本地文件夹
     path = QDir::toNativeSeparators(path);
     QDir dir(path);
     if (!dir.exists())
         dir.mkpath(path);
-    QTime time(QTime::currentTime());
-    QString curr = intToString(QTime(0, 0, 0).secsTo(time));
+//    QTime time(QTime::currentTime());
+    QString curr = QDate::currentDate().toString();
     curr = "/" + curr;
     QString name(path + curr + suffix);
     QFile file;                                  //创建新文件
     name = QDir::toNativeSeparators(name);
     file.setFileName(name);
-    file.open(QIODevice::ReadOnly);
+    file.open(QIODevice::ReadWrite | QIODevice::Append);
     if (!file.exists())
     {
         file.close();
-        file.open(QIODevice::ReadWrite);
+        file.open(QIODevice::ReadWrite | QIODevice::Append);
     }
     if (file.isOpen())
     {
-        file.write(data);
+        file.write(data + "\n");
         file.close();
     }
 }
@@ -137,6 +138,7 @@ void MainWindow::on_button_1_clicked()
     QString str = text->toPlainText();
     qDebug() << str;
     myClient->write(str.toUtf8());
+    text->clear();
 }
 
 void MainWindow::warn()
