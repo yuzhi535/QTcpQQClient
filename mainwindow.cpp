@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
     this->setCentralWidget(qwidget);
     grid = new QGridLayout(qwidget);
     list_1 = new QListWidget(this);
+//    list_1->setSelectionMode(QAbstractItemView::ExtendedSelection);
     view = new QGraphicsView(this);
     button_1 = new QPushButton(this);
     button_2 = new QPushButton(this);
@@ -45,6 +46,14 @@ MainWindow::MainWindow(QWidget *parent)
     grid->addWidget(button_4, 14, 2, 2, 2);
 
     flag = false;
+    menu = new QMenu(this);
+    about = new QAction(QString("author"), this);
+    menu = menuBar()->addMenu(QString("about"));
+    menu->addAction(about);
+    connect(about, &QAction::triggered, [&] () {
+        QMessageBox::information(this, QString("通知"), QString("<h1>作者：周誉喜</h1><h2>代码已放在github上</h2><h3>"
+                                                              "地址: https://github.com/yuzhi535/QTcpQQServer</h3>"));
+    });
 }
 
 MainWindow::~MainWindow()
@@ -208,6 +217,7 @@ void MainWindow::on_button_4_clicked()
 
             myClient->write(s + buffer.data());
             myClient->waitForBytesWritten();
+            flag = false;
         }
         else
         {

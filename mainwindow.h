@@ -67,5 +67,8 @@ private:
 
     bool flag;
 
+    QMenu* menu;
+    QAction* about;
+
 };
 #endif // MAINWINDOW_H
