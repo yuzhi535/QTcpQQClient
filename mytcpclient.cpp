@@ -2,7 +2,7 @@
 
 MyTcpClient::MyTcpClient(QObject *parent) : QTcpSocket(parent)
 {
-    mySocket = new QTcpSocket();
+
 }
 
 void MyTcpClient::setName(QString name)

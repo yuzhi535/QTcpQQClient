@@ -35,6 +35,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(button_3, &QAbstractButton::clicked, this, &MainWindow::on_button_3_clicked);
     connect(button_4, &QAbstractButton::clicked, this, &MainWindow::on_button_4_clicked);
 
+    connect(list_1, &QListWidget::doubleClicked, [&]() {
+        QString msg = list_1->currentItem()->text();
+        QMessageBox::information(this, QString("通知"), QString("<h2>" + msg + "</h2>"));
+    });
+
     grid->setHorizontalSpacing(20);
     grid->setVerticalSpacing(16);
     grid->addWidget(button_1, 14, 4, 2, 2);
@@ -116,6 +121,7 @@ void MainWindow::addInfo()
         if (str.at(0) != '\r')
         {
             str.remove('\b');
+            str = QDate::currentDate().toString() + "." + str;
             list_1->addItem(str);
             createFile(data, ".txt");
         }

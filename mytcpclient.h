@@ -18,7 +18,6 @@ public:
 signals:
 
 private:
-    QTcpSocket* mySocket;
     QString m_name;
     QString m_password;
 };
