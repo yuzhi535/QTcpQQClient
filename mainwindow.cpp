@@ -37,7 +37,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(list_1, &QListWidget::doubleClicked, [&]() {
         QString msg = list_1->currentItem()->text();
-        QMessageBox::information(this, QString("通知"), QString("<h2>" + msg + "</h2>"));
+        QMessageBox::information(this, QString("通知"), QString("<h3>" + msg + "</h3>"));
     });
 
     grid->setHorizontalSpacing(20);
@@ -121,7 +121,7 @@ void MainWindow::addInfo()
         if (str.at(0) != '\r')
         {
             str.remove('\b');
-            str = QDate::currentDate().toString() + "." + str;
+//            str = QDate::currentDate().toString() + "." + str;
             list_1->addItem(str);
             createFile(data, ".txt");
         }
