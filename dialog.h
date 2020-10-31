@@ -21,6 +21,8 @@ public:
     explicit Dialog(QWidget *parent = nullptr);
     ~Dialog();
     void sleep(qint32 sec);
+    void setIp(QString _ip);
+    void setPort(qint32 _port);
 
 signals:
     void newMsg(QString msg);

@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     list_1 = new QListWidget(this);
 //    list_1->setSelectionMode(QAbstractItemView::ExtendedSelection);
     view = new QGraphicsView(this);
+    text = new QTextEdit(this);
     button_1 = new QPushButton(this);
     button_2 = new QPushButton(this);
     button_3 = new QPushButton(this);
@@ -22,8 +23,9 @@ MainWindow::MainWindow(QWidget *parent)
     button_3->setAccessibleName("button_3");
     button_4->setAccessibleName("button_4");
 
-    text = new QTextEdit(this);
-
+    view->setStatusTip(QString("预览图片"));
+    text->setStatusTip(QString("消息框"));
+    list_1->setStatusTip(QString("文本接收框"));
     button_1->setText(QString(tr("发送")));
     button_2->setText(QString(tr("关闭")));
     button_3->setText(QString(tr("选择图片")));
@@ -50,10 +52,13 @@ MainWindow::MainWindow(QWidget *parent)
     grid->addWidget(button_3, 14, 0, 2, 2);
     grid->addWidget(button_4, 14, 2, 2, 2);
 
+    //设计样式
+
+
     flag = false;
     menu = new QMenu(this);
-    about = new QAction(QString("author"), this);
-    menu = menuBar()->addMenu(QString("about"));
+    about = new QAction(QString("作者"), this);
+    menu = menuBar()->addMenu(QString("关于"));
     menu->addAction(about);
     connect(about, &QAction::triggered, [&] () {
         QMessageBox::information(this, QString("通知"), QString("<h1>作者：周誉喜</h1><h2>代码已放在github上</h2><h3>"

@@ -13,6 +13,7 @@ Dialog::Dialog(QWidget *parent) :
     socket = new MyTcpClient();
     socket->setReadBufferSize(0);
     w->setSocket(socket);
+
 }
 
 #include <iostream>
@@ -68,4 +69,14 @@ void Dialog::on_pushButton_clicked()
 void Dialog::on_pushButton_2_clicked()
 {
     close();
+}
+
+void Dialog::setIp(QString _ip)
+{
+    ip = _ip;
+}
+
+void Dialog::setPort(qint32 _port)
+{
+    port = _port;
 }

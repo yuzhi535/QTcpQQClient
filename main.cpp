@@ -5,9 +5,13 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+//#define MYDEBUG
+#ifdef MYDEBUG
     Dialog dialog;
     dialog.show();
-//    MainWindow w;
-//    w.show();
+#else
+    MainWindow w;
+    w.show();
+#endif
     return a.exec();
 }
