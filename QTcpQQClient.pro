@@ -12,12 +12,14 @@ SOURCES += \
     dialog.cpp \
     main.cpp \
     mainwindow.cpp \
-    mytcpclient.cpp
+    mytcpclient.cpp \
+    screenwidget.cpp
 
 HEADERS += \
     dialog.h \
     mainwindow.h \
-    mytcpclient.h
+    mytcpclient.h \
+    screenwidget.h
 
 FORMS += \
     dialog.ui \

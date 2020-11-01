@@ -9,7 +9,6 @@
 #include <QTextEdit>
 #include <QProgressBar>
 #include <QGridLayout>
-#include "mytcpclient.h"
 #include <QMessageBox>
 #include <QGraphicsView>
 #include <QFileDialog>
@@ -17,6 +16,10 @@
 #include <QBuffer>
 #include <QThread>
 #include <QDate>
+#include <QThread>
+
+#include "mytcpclient.h"
+#include "screenwidget.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -47,7 +50,6 @@ public slots:
     void on_button_4_clicked();
 
 
-
 private:
     Ui::MainWindow *ui;
     QWidget* qwidget;
@@ -69,6 +71,9 @@ private:
 
     QMenu* menu;
     QAction* about;
+    QMenu* screenShot;
+    QAction* shot;
+    QAction* hideShot;
 
 };
 #endif // MAINWINDOW_H

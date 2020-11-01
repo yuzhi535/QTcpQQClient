@@ -11,7 +11,6 @@ MainWindow::MainWindow(QWidget *parent)
     this->setCentralWidget(qwidget);
     grid = new QGridLayout(qwidget);
     list_1 = new QListWidget(this);
-//    list_1->setSelectionMode(QAbstractItemView::ExtendedSelection);
     view = new QGraphicsView(this);
     text = new QTextEdit(this);
     button_1 = new QPushButton(this);
@@ -32,7 +31,7 @@ MainWindow::MainWindow(QWidget *parent)
     button_4->setText(QString(tr("发送图片")));
     button_1->setShortcut(QString("ctrl+return"));
     button_2->setShortcut(QString("esc"));
-    connect(button_2, &QPushButton::clicked, this, &MainWindow::close);
+    connect(button_2, &QPushButton::clicked, [&] () {close(); exit(0); });
     connect(button_1, &QAbstractButton::clicked, this, &MainWindow::on_button_1_clicked);
     connect(button_3, &QAbstractButton::clicked, this, &MainWindow::on_button_3_clicked);
     connect(button_4, &QAbstractButton::clicked, this, &MainWindow::on_button_4_clicked);
@@ -56,10 +55,73 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     flag = false;
+    screenShot = new QMenu(this);
     menu = new QMenu(this);
+
+    shot = new QAction(QString("截图"), this);
     about = new QAction(QString("作者"), this);
+    hideShot = new QAction(QString("隐藏界面并截图"), this);
+
+    screenShot = menuBar()->addMenu(QString("工具"));
     menu = menuBar()->addMenu(QString("关于"));
+
+    screenShot->addAction(shot);
+    screenShot->addAction(hideShot);
     menu->addAction(about);
+
+
+    connect(shot, &QAction::triggered, [&] () {
+        ScreenWidget w;
+        w.Instance()->showFullScreen();
+
+        QString file("screenShot.png");
+        QFile testFile(file);
+        if (testFile.exists())
+        {
+            img.load(file);
+            QBuffer buffer;
+            buffer.open(QIODevice::ReadWrite);
+            img.save(&buffer, "png");
+
+            QByteArray dataArray;
+            dataArray.append(buffer.data());
+
+            QGraphicsScene* scene = new QGraphicsScene();
+            scene->addPixmap(img);
+            view->setScene(scene);
+            view->show();
+        }
+
+    });
+
+    connect(hideShot, &QAction::triggered, [&]() {
+        hide();
+        QThread::msleep(1000);
+        ScreenWidget w;
+        w.Instance()->showFullScreen();
+        show();
+
+        QString file("screenShot.png");
+        QFile testFile(file);
+        if (testFile.exists())
+        {
+            img.load(file);
+            QBuffer buffer;
+            buffer.open(QIODevice::ReadWrite);
+            img.save(&buffer, "png");
+
+            QByteArray dataArray;
+            dataArray.append(buffer.data());
+
+            QGraphicsScene* scene = new QGraphicsScene();
+            scene->addPixmap(img);
+            view->setScene(scene);
+            view->show();
+        }
+
+
+    });
+
     connect(about, &QAction::triggered, [&] () {
         QMessageBox::information(this, QString("通知"), QString("<h1>作者：周誉喜</h1><h2>代码已放在github上</h2><h3>"
                                                               "地址: https://github.com/yuzhi535/QTcpQQServer</h3>"));
@@ -176,7 +238,7 @@ void MainWindow::on_button_3_clicked()
         img.load(file);
         QBuffer buffer;
         buffer.open(QIODevice::ReadWrite);
-        img.save(&buffer, "JPG");
+        img.save(&buffer, "png");
 
         QByteArray dataArray;
         dataArray.append(buffer.data());
@@ -240,3 +302,4 @@ void MainWindow::on_button_4_clicked()
         QMessageBox::warning(this, "警告", "<h1>您还没有选择任何图片</h1>");
     }
 }
+
