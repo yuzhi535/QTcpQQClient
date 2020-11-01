@@ -6,6 +6,15 @@
 #include <QPoint>
 #include <QSize>
 #include <QMouseEvent>
+#include <QMutex>
+#include <QApplication>
+#include <QPainter>
+#include <QDesktopWidget>
+#include <QFileDialog>
+#include <QEvent>
+#include <QDateTime>
+#include <QStringList>
+#include <QScreen>
 
 class Screen
 {
@@ -50,12 +59,11 @@ public:
 
 protected:
     void contextMenuEvent(QContextMenuEvent* );
-    void mousePressEvent(QMouseEvent *);
-    void mouseMoveEvent(QMouseEvent *);
-    void mouseReleaseEvent(QMouseEvent *);
-    void paintEvent(QPaintEvent *);
-    void showEvent(QShowEvent *);
-
+    void mousePressEvent(QMouseEvent* );
+    void mouseMoveEvent(QMouseEvent* );
+    void mouseReleaseEvent(QMouseEvent* );
+    void paintEvent(QPaintEvent* );
+    void showEvent(QShowEvent* );
 
 
 private:
@@ -65,6 +73,7 @@ private:
     QPixmap* fullScreen = nullptr;
     QPixmap* bgScreen;
     QPoint movPos;
+
 
 private slots:
     void saveScreen();

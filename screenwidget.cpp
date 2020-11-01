@@ -1,16 +1,5 @@
 #include "screenwidget.h"
-#include <qmutex.h>
-#include <QApplication>
-#include <QPainter>
-#include <QDesktopWidget>
-#include <QFileDialog>
-#include <QEvent>
-#include <QDateTime>
-#include <QStringList>
-#include <QScreen>
 
-
-#define STRDATETIME qPrintable (QDateTime::currentDateTime().toString("yyyy-MM-dd-HH-mm-ss"))
 
 Screen::Screen(QSize size)
 {
@@ -93,22 +82,26 @@ void Screen::move(QPoint p)
     int rx = rightDownPos.x() + p.x();
     int ry = rightDownPos.y() + p.y();
 
-    if (lx < 0) {
+    if (lx < 0)
+    {
         lx = 0;
         rx -= p.x();
     }
 
-    if (ly < 0) {
+    if (ly < 0)
+    {
         ly = 0;
         ry -= p.y();
     }
 
-    if (rx > maxWidth)  {
+    if (rx > maxWidth)
+    {
         rx = maxWidth;
         lx -= p.x();
     }
 
-    if (ry > maxHeight) {
+    if (ry > maxHeight)
+    {
         ry = maxHeight;
         ly -= p.y();
     }
@@ -124,18 +117,26 @@ void Screen::cmpPoint(QPoint &leftTop, QPoint &rightDown)
     QPoint l = leftTop;
     QPoint r = rightDown;
 
-    if (l.x() <= r.x()) {
-        if (l.y() <= r.y()) {
-            ;
-        } else {
+    if (l.x() <= r.x())
+    {
+        if (l.y() <= r.y())
+        {
+        }
+        else
+        {
             leftTop.setY(r.y());
             rightDown.setY(l.y());
         }
-    } else {
-        if (l.y() < r.y()) {
+    }
+    else
+    {
+        if (l.y() < r.y())
+        {
             leftTop.setX(r.x());
             rightDown.setX(l.x());
-        } else {
+        }
+        else
+        {
             QPoint tmp;
             tmp = leftTop;
             leftTop = rightDown;
@@ -188,7 +189,8 @@ void ScreenWidget::paintEvent(QPaintEvent *)
     painter.setPen(pen);
     painter.drawPixmap(0, 0, *bgScreen);
 
-    if (w != 0 && h != 0) {
+    if (w != 0 && h != 0)
+    {
         painter.drawPixmap(x, y, fullScreen->copy(x, y, w, h));
     }
 
@@ -234,7 +236,6 @@ void ScreenWidget::saveScreen()
 void ScreenWidget::saveFullScreen()
 {
     QString fileName("screenShot.png");
-//    QString fileName = QString("%1/full_%2.png").arg(qApp->applicationDirPath()).arg(STRDATETIME);
     fullScreen->save(fileName, "png");
     close();
 }
@@ -255,7 +256,8 @@ void ScreenWidget::saveScreenOther()
 void ScreenWidget::saveFullOther()
 {
     QString fileName("screenShot.png");
-    if (fileName.length() > 0) {
+    if (fileName.length() > 0)
+    {
         fullScreen->save(fileName, "png");
         close();
     }
@@ -263,9 +265,12 @@ void ScreenWidget::saveFullOther()
 
 void ScreenWidget::mouseMoveEvent(QMouseEvent *e)
 {
-    if (screen->getStatus() == Screen::SELECT) {
+    if (screen->getStatus() == Screen::SELECT)
+    {
         screen->setEnd(e->pos());
-    } else if (screen->getStatus() == Screen::MOV) {
+    }
+    else if (screen->getStatus() == Screen::MOV)
+    {
         QPoint p(e->x() - movPos.x(), e->y() - movPos.y());
         screen->move(p);
         movPos = e->pos();
@@ -278,13 +283,19 @@ void ScreenWidget::mousePressEvent(QMouseEvent *e)
 {
     int status = screen->getStatus();
 
-    if (status == Screen::SELECT) {
+    if (status == Screen::SELECT)
+    {
         screen->setStart(e->pos());
-    } else if (status == Screen::MOV) {
-        if (screen->isInArea(e->pos()) == false) {
+    }
+    else if (status == Screen::MOV)
+    {
+        if (screen->isInArea(e->pos()) == false)
+        {
             screen->setStart(e->pos());
             screen->setStatus(Screen::SELECT);
-        } else {
+        }
+        else
+        {
             movPos = e->pos();
             this->setCursor(Qt::SizeAllCursor);
         }
@@ -295,9 +306,12 @@ void ScreenWidget::mousePressEvent(QMouseEvent *e)
 
 void ScreenWidget::mouseReleaseEvent(QMouseEvent *)
 {
-    if (screen->getStatus() == Screen::SELECT) {
+    if (screen->getStatus() == Screen::SELECT)
+    {
         screen->setStatus(Screen::MOV);
-    } else if (screen->getStatus() == Screen::MOV) {
+    }
+    else if (screen->getStatus() == Screen::MOV)
+    {
         this->setCursor(Qt::ArrowCursor);
     }
 }
