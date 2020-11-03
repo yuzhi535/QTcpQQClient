@@ -35,26 +35,19 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(85, 170, 255);</string>
+    <string notr="true">background-image: url(:/new/img/login.png);</string>
    </property>
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>240</x>
-      <y>50</y>
-      <width>91</width>
-      <height>31</height>
+      <x>70</x>
+      <y>0</y>
+      <width>481</width>
+      <height>131</height>
      </rect>
     </property>
-    <property name="styleSheet">
-     <string notr="true">color: rgb(0, 0, 0);
-font: 29 18pt &quot;Noto Sans CJK SC DemiLight&quot;;</string>
-    </property>
     <property name="text">
-     <string>请登录</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
+     <string/>
     </property>
    </widget>
   </widget>
@@ -180,6 +173,22 @@ font: 29 18pt &quot;Noto Sans CJK SC DemiLight&quot;;</string>
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>40</y>
+      <width>58</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">image: url(:/new/img/qq.png);</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
    </widget>
   </widget>
  </widget>

@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
     this->setCentralWidget(qwidget);
     grid = new QGridLayout(qwidget);
     list_1 = new QListWidget(this);
+    list_2 = new QListWidget(this);
     view = new QGraphicsView(this);
     text = new QTextEdit(this);
     button_1 = new QPushButton(this);
@@ -28,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent)
     view->setStatusTip(QString("预览图片"));
     text->setStatusTip(QString("消息框"));
     list_1->setStatusTip(QString("文本接收框"));
+    list_2->setStatusTip(QString("显示群成员"));
     button_1->setText(QString(tr("发送")));
     button_2->setText(QString(tr("关闭")));
     button_3->setText(QString(tr("选择图片")));
@@ -49,10 +51,11 @@ MainWindow::MainWindow(QWidget *parent)
     grid->addWidget(button_1, 14, 4, 2, 2);
     grid->addWidget(button_2, 14, 6, 2, 2);
     grid->addWidget(list_1, 0, 0, 10, 8);
-    grid->addWidget(view, 0, 8, 16, 12);
+    grid->addWidget(view, 0, 8, 12, 12);
     grid->addWidget(text, 10, 0, 4, 8);
     grid->addWidget(button_3, 14, 0, 2, 2);
     grid->addWidget(button_4, 14, 2, 2, 2);
+    grid->addWidget(list_2, 12, 8, 4, 12);
 
     //设计样式
 
@@ -76,6 +79,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(shot, &QAction::triggered, [&] () {
         ScreenWidget w;
         w.Instance()->showFullScreen();
+        flag = true;
 
         QString file("screenShot.png");
         QFile testFile(file);
@@ -104,6 +108,7 @@ MainWindow::MainWindow(QWidget *parent)
         w.showFullScreen();
         w.Instance()->showFullScreen();
         show();
+        flag = true;
 
         QString file("screenShot.png");
         QFile testFile(file);
@@ -121,7 +126,6 @@ MainWindow::MainWindow(QWidget *parent)
             scene->addPixmap(img);
             view->setScene(scene);
             view->show();
-
         }
     });
 #else
@@ -162,6 +166,7 @@ MainWindow::MainWindow(QWidget *parent)
     this->setStyleSheet("");
     list_1->setStyleSheet("background-color: "
                           "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(25, 25, 25, 255), stop:1 rgba(50, 50, 50, 255));");
+
 }
 
 
@@ -216,6 +221,31 @@ void MainWindow::createFile(QByteArray& data, QString suffix)
     }
 }
 
+void MainWindow::parseName(QString& msg)
+{
+    QString name;
+    for (auto i = users.begin(); i != users.end(); ++i)   //将曾经的用户标记为旧值
+        i.value() = 1;
+//    int j = 0;
+    for (int i = 1; msg.at(i) != '\r'; ++i)
+    {
+        if (msg.at(i) == '\b')
+        {
+//            msg.remove(j, i - j + 1);
+//            j = i;
+            if (name != "" && users.find(name) == users.end())
+                users.insert(name, 0);   //新用户
+            else if (name != "" && users.find(name) != users.end())
+                users[name] = 2;
+            name = "";
+        }
+        else
+        {
+            name += msg.at(i);
+        }
+    }
+}
+
 void MainWindow::addInfo()
 {
     QByteArray data = myClient->readAll();
@@ -224,7 +254,37 @@ void MainWindow::addInfo()
         QString str = data;
         if (str.at(0) != '\r')
         {
-            str.remove('\b');
+            parseName(str);
+
+            for (auto i = users.begin(); i != users.end(); ++i)
+            {
+                if (i.value() == 0)
+                {
+                    list_2->addItem(i.key());
+                    i.value() = 2;   //更新用户
+                }
+                if (i.value() == 1)
+                {
+                    for (int j = 0; j < list_2->count(); ++j)
+                    {
+                        if ((*list_2->item(j)).text() == i.key())
+                        {
+                            delete list_2->takeItem(j);
+                        }
+                    }
+
+                    i = users.erase(i);   //删除离开用户
+                    --i;
+                }
+            }
+
+            for (int i = 0; i < list_2->count(); ++i)
+            {
+//                if (list_2->item(i))
+            }
+
+            str.remove(QRegularExpression(QString("\b.*\b\r")));
+
 //            str = QDate::currentDate().toString() + "." + str;
             list_1->addItem(str);
             createFile(data, ".txt");

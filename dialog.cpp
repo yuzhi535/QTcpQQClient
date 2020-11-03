@@ -9,6 +9,8 @@ Dialog::Dialog(QWidget *parent) :
     ui->setupUi(this);
     setWindowTitle(QString("登陆界面"));
 
+
+
     w = new MainWindow();
     socket = new MyTcpClient();
     socket->setReadBufferSize(0);
@@ -52,7 +54,7 @@ void Dialog::on_pushButton_clicked()
 
             QString login("\b");
             login += name + "\b";
-            login += ui->lineEdit_2->text() + "\b";
+            login += ui->lineEdit_2->text();
             socket->write(login.toUtf8());
         }
         else

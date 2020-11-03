@@ -18,6 +18,8 @@
 #include <QDate>
 #include <QThread>
 #include <QMutex>
+#include <QRegularExpression>
+#include <QMap>
 
 #include "mytcpclient.h"
 #include "screenwidget.h"
@@ -38,7 +40,7 @@ public:
     void createFile(QByteArray& data, QString suffix);
     QString intToString(int num);
     void showImg(QByteArray img);
-//    void setName()
+    void parseName(QString& msg);
 
 
 signals:
@@ -52,16 +54,29 @@ public slots:
 
 
 private:
+
+/**
+ * @brief ui
+ * qwidget        main window
+ * list_1         show the info recieved
+ * list_2         show the group
+ * text           text the info
+ * button_1       send
+ * button_2       close
+ * button_3       open an image
+ * button_4       send an image
+ */
+
     Ui::MainWindow *ui;
     QWidget* qwidget;
     QListWidget* list_1;
+    QListWidget* list_2;
     QGraphicsView* view;
     QTextEdit* text;
     QPushButton* button_1;
     QPushButton* button_2;
     QPushButton* button_3;
     QPushButton* button_4;
-    QProgressBar* progressBar;
     QGridLayout* grid;
 
     QPixmap img;
@@ -69,6 +84,8 @@ private:
     MyTcpClient* myClient = nullptr;
 
     bool flag;
+
+    QMap<QString, int> users;
 
     QMenu* menu;
     QAction* about;

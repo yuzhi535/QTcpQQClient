@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/new/img">
+        <file>wallpaper.png</file>
+        <file>login.png</file>
+        <file>qq.png</file>
+        <file>qqlogo.png</file>
+        <file>window.png</file>
+    </qresource>
+</RCC>
