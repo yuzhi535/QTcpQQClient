@@ -5,6 +5,9 @@
 #include <QTcpSocket>
 #include <QHostAddress>
 
+/**
+ * @brief The MyTcpClient class
+ */
 class MyTcpClient : public QTcpSocket
 {
     Q_OBJECT

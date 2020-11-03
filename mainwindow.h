@@ -54,19 +54,6 @@ public slots:
 
 
 private:
-
-/**
- * @brief ui
- * qwidget        main window
- * list_1         show the info recieved
- * list_2         show the group
- * text           text the info
- * button_1       send
- * button_2       close
- * button_3       open an image
- * button_4       send an image
- */
-
     Ui::MainWindow *ui;
     QWidget* qwidget;
     QListWidget* list_1;

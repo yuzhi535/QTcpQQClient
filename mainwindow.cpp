@@ -1,6 +1,10 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+/**
+ * @brief MainWindow::MainWindow
+ * @param parent
+ */
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -201,7 +205,6 @@ void MainWindow::createFile(QByteArray& data, QString suffix)
     QDir dir(path);
     if (!dir.exists())
         dir.mkpath(path);
-//    QTime time(QTime::currentTime());
     QString curr = QDate::currentDate().toString();
     curr = "/" + curr;
     QString name(path + curr + suffix);
@@ -231,8 +234,6 @@ void MainWindow::parseName(QString& msg)
     {
         if (msg.at(i) == '\b')
         {
-//            msg.remove(j, i - j + 1);
-//            j = i;
             if (name != "" && users.find(name) == users.end())
                 users.insert(name, 0);   //新用户
             else if (name != "" && users.find(name) != users.end())
@@ -269,7 +270,7 @@ void MainWindow::addInfo()
                     {
                         if ((*list_2->item(j)).text() == i.key())
                         {
-                            delete list_2->takeItem(j);
+                            delete list_2->takeItem(j);   //在界面中删除无用用户
                         }
                     }
 

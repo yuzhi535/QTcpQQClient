@@ -17,6 +17,10 @@
 #include <QScreen>
 #include <QGraphicsView>
 
+/**
+ * @brief The Screen class
+ * @target used for ScreenWidget
+ */
 class Screen
 {
 public:
@@ -49,7 +53,10 @@ private:
     void cmpPoint(QPoint &s, QPoint &e);//比较两位置，判断左上角、右下角
 };
 
-
+/**
+ * @brief The ScreenWidget class
+ * @target screenshot
+ */
 class ScreenWidget : public QWidget
 {
     Q_OBJECT

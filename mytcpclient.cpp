@@ -1,9 +1,7 @@
 #include "mytcpclient.h"
 
 MyTcpClient::MyTcpClient(QObject *parent) : QTcpSocket(parent)
-{
-
-}
+{}
 
 void MyTcpClient::setName(QString name)
 {

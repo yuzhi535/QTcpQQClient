@@ -9,10 +9,14 @@
 #include <QTime>
 #include <QMessageBox>
 
+
 namespace Ui {
 class Dialog;
 }
 
+/**
+ * @brief The Dialog class
+ */
 class Dialog : public QDialog
 {
     Q_OBJECT
@@ -33,10 +37,10 @@ public slots:
 
 private:
     Ui::Dialog *ui;
-    MainWindow* w;               //主界面
-    MyTcpClient* socket;          //connect
-    QString ip = "127.0.0.1";    //ip
-    qint32 port = 18080;          //port
+    MainWindow* w;              //main window
+    MyTcpClient* socket;        //used to connect, send and receive
+    QString ip = "127.0.0.1";   //ip
+    qint32 port = 18080;        //port
 };
 
 #endif // DIALOG_H
