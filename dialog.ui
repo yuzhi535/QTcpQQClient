@@ -53,6 +53,9 @@ font: 29 18pt &quot;Noto Sans CJK SC DemiLight&quot;;</string>
     <property name="text">
      <string>请登录</string>
     </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
    </widget>
   </widget>
   <widget class="QWidget" name="widget_2" native="true">

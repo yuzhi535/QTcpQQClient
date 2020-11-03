@@ -17,6 +17,7 @@
 #include <QThread>
 #include <QDate>
 #include <QThread>
+#include <QMutex>
 
 #include "mytcpclient.h"
 #include "screenwidget.h"
@@ -65,7 +66,7 @@ private:
 
     QPixmap img;
 
-    MyTcpClient* myClient;
+    MyTcpClient* myClient = nullptr;
 
     bool flag;
 
@@ -74,6 +75,8 @@ private:
     QMenu* screenShot;
     QAction* shot;
     QAction* hideShot;
+
+    QMutex* mutex;
 
 };
 #endif // MAINWINDOW_H

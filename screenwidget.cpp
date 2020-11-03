@@ -162,6 +162,7 @@ ScreenWidget* ScreenWidget::Instance()
 
 ScreenWidget::ScreenWidget(QWidget *parent) : QWidget(parent)
 {
+
     menu = new QMenu(this);
     menu->addAction(QString("保存当前截图"), this, SLOT(saveScreen()));
     menu->addAction(QString("保存全屏截图"), this, SLOT(saveFullScreen()));
@@ -171,6 +172,8 @@ ScreenWidget::ScreenWidget(QWidget *parent) : QWidget(parent)
 
     screen = new Screen(QApplication::desktop()->size());
     fullScreen = new QPixmap();
+
+
 }
 
 void ScreenWidget::paintEvent(QPaintEvent *)
@@ -226,10 +229,9 @@ void ScreenWidget::saveScreen()
     int w = screen->getRightDown().x() - x;
     int h = screen->getRightDown().y() - y;
 
-    *fullScreen = fullScreen->copy(x, y, w, h);
-
     QString fileName("screenShot.png");
-    fullScreen->copy(x, y, w, h).save(fileName, "png");
+    *fullScreen = fullScreen->copy(x, y, w, h);
+    fullScreen->save(fileName, "png");
     close();
 }
 
@@ -249,7 +251,8 @@ void ScreenWidget::saveScreenOther()
     int w = screen->getRightDown().x() - x;
     int h = screen->getRightDown().y() - y;
 
-    fullScreen->copy(x, y, w, h).save(fileName, "png");
+    *fullScreen = fullScreen->copy(x, y, w, h);
+    fullScreen->save(fileName, "png");
     close();
 }
 
@@ -321,3 +324,4 @@ void ScreenWidget::contextMenuEvent(QContextMenuEvent *)
     this->setCursor(Qt::ArrowCursor);
     menu->exec(cursor().pos());
 }
+

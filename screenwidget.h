@@ -15,6 +15,7 @@
 #include <QDateTime>
 #include <QStringList>
 #include <QScreen>
+#include <QGraphicsView>
 
 class Screen
 {
@@ -55,6 +56,7 @@ class ScreenWidget : public QWidget
 public:
     static ScreenWidget* Instance();
     explicit ScreenWidget(QWidget *parent = nullptr);
+    void showView();
 
 
 protected:

@@ -6,6 +6,9 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    mutex = new QMutex();
+
     setWindowTitle(QString("主界面"));
     qwidget = new QWidget(this);
     this->setCentralWidget(qwidget);
@@ -69,7 +72,7 @@ MainWindow::MainWindow(QWidget *parent)
     screenShot->addAction(hideShot);
     menu->addAction(about);
 
-
+#if 1
     connect(shot, &QAction::triggered, [&] () {
         ScreenWidget w;
         w.Instance()->showFullScreen();
@@ -91,13 +94,14 @@ MainWindow::MainWindow(QWidget *parent)
             view->setScene(scene);
             view->show();
         }
-
     });
+
 
     connect(hideShot, &QAction::triggered, [&]() {
         hide();
         QThread::msleep(1000);
         ScreenWidget w;
+        w.showFullScreen();
         w.Instance()->showFullScreen();
         show();
 
@@ -117,16 +121,49 @@ MainWindow::MainWindow(QWidget *parent)
             scene->addPixmap(img);
             view->setScene(scene);
             view->show();
-        }
 
+        }
+    });
+#else
+    connect(shot, &QAction::triggered, [&] () {
+        QScreen *pscreen = QApplication::primaryScreen();
+        img = pscreen->grabWindow(QApplication::desktop()->winId(), 0, 0);
+
+        QWidget newWidget;
+        newWidget.showFullScreen();
+
+        QGraphicsScene* scene = new QGraphicsScene();
+        scene->addPixmap(img);
+        view->setScene(scene);
+        view->show();
+    });
+
+    connect(hideShot, &QAction::triggered, [&] () {
+        hide();
+        QThread::msleep(1000);
+        QScreen *pscreen = QApplication::primaryScreen();
+        img = pscreen->grabWindow(QApplication::desktop()->winId(), 0, 0);
+        show();
+
+        QGraphicsScene* scene = new QGraphicsScene();
+        scene->addPixmap(img);
+        view->setScene(scene);
+        view->show();
 
     });
 
+#endif
     connect(about, &QAction::triggered, [&] () {
         QMessageBox::information(this, QString("通知"), QString("<h1>作者：周誉喜</h1><h2>代码已放在github上</h2><h3>"
                                                               "地址: https://github.com/yuzhi535/QTcpQQServer</h3>"));
     });
+
+    this->setStyleSheet("background-color: rgba(50, 50, 50, 0.7)");
+    this->setStyleSheet("");
+    list_1->setStyleSheet("background-color: "
+                          "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(25, 25, 25, 255), stop:1 rgba(50, 50, 50, 255));");
 }
+
 
 MainWindow::~MainWindow()
 {
@@ -217,11 +254,27 @@ void MainWindow::addInfo()
 
 void MainWindow::on_button_1_clicked()
 {
-    QString str = text->toPlainText();
-    qDebug() << str;
-    myClient->write(str.toUtf8());
-    text->clear();
+    if (myClient == nullptr)
+    {
+        QMessageBox::warning(this, "错误", "不能连接到服务端，即将关闭");
+        close();
+        exit(0);
+    }
+    else if (myClient->state() == QTcpSocket::ConnectedState)
+    {
+        QString str = text->toPlainText();
+        qDebug() << str;
+        myClient->write(str.toUtf8());
+        text->clear();
+    }
+    else
+    {
+        QMessageBox::warning(this, "错误", "不能连接到服务端，即将关闭");
+        close();
+        exit(0);
+    }
 }
+
 
 void MainWindow::warn()
 {
@@ -253,6 +306,7 @@ void MainWindow::on_button_3_clicked()
 
 void MainWindow::showImg(QByteArray data)
 {
+    mutex->lock();
     img.loadFromData(data, "PNG");
     QBuffer buffer;
     buffer.open(QIODevice::ReadWrite);
@@ -265,6 +319,7 @@ void MainWindow::showImg(QByteArray data)
     scene->addPixmap(img);
     view->setScene(scene);
     view->show();
+    mutex->unlock();
 }
 
 void MainWindow::on_button_4_clicked()
