@@ -166,10 +166,20 @@ MainWindow::MainWindow(QWidget *parent)
                                                               "地址: https://github.com/yuzhi535/QTcpQQServer</h3>"));
     });
 
-    this->setStyleSheet("background-color: rgba(50, 50, 50, 0.7)");
-    this->setStyleSheet("");
-    list_1->setStyleSheet("background-color: "
-                          "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(25, 25, 25, 255), stop:1 rgba(50, 50, 50, 255));");
+//    this->setStyleSheet("background-color: rgba(50, 50, 50, 0.7)");
+//    list_1->setStyleSheet("background-color: "
+//                          "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(25, 25, 25, 255), stop:1 rgba(50, 50, 50, 255));");
+
+
+    list_1->setStyleSheet("background-color: rgba(50, 50, 50, 0.5)");
+    list_2->setStyleSheet("background-color: rgba(50, 50, 50, 0.5)");
+    view->setStyleSheet("background-color: rgba(50, 50, 50, 0.5)");
+    text->setStyleSheet("background-color: rgba(50, 50, 50, 0.6)");
+
+    QPixmap pixmap = QPixmap(":/new/img/wallpaper.png").scaled(this->size());
+    QPalette palette(this->palette());
+    palette.setBrush(QPalette::Background, QBrush(pixmap));
+    this->setPalette(palette);
 
 }
 
@@ -229,7 +239,6 @@ void MainWindow::parseName(QString& msg)
     QString name;
     for (auto i = users.begin(); i != users.end(); ++i)   //将曾经的用户标记为旧值
         i.value() = 1;
-//    int j = 0;
     for (int i = 1; msg.at(i) != '\r'; ++i)
     {
         if (msg.at(i) == '\b')
@@ -279,14 +288,8 @@ void MainWindow::addInfo()
                 }
             }
 
-            for (int i = 0; i < list_2->count(); ++i)
-            {
-//                if (list_2->item(i))
-            }
-
             str.remove(QRegularExpression(QString("\b.*\b\r")));
 
-//            str = QDate::currentDate().toString() + "." + str;
             list_1->addItem(str);
             createFile(data, ".txt");
         }
@@ -346,7 +349,7 @@ void MainWindow::warn()
 
 void MainWindow::on_button_3_clicked()
 {
-    auto file = QFileDialog::getOpenFileName(this, tr("选择图片"), "../", tr("images(*.png)"));
+    auto file = QFileDialog::getOpenFileName(this, tr("choose the image"), QString("."), tr("images(*.png)"));
     if (!file.isEmpty())
     {
         img.load(file);
@@ -403,8 +406,8 @@ void MainWindow::on_button_4_clicked()
             }
             s.insert(0, '\r');
             s.append('\r');
-
-            myClient->write(s + buffer.data());
+            s += buffer.data();
+            myClient->write(s);
             myClient->waitForBytesWritten();
             flag = false;
         }

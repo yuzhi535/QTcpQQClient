@@ -9,8 +9,6 @@ Dialog::Dialog(QWidget *parent) :
     ui->setupUi(this);
     setWindowTitle(QString("登陆界面"));
 
-
-
     w = new MainWindow();
     socket = new MyTcpClient();
     socket->setReadBufferSize(0);
@@ -82,3 +80,32 @@ void Dialog::setPort(qint32 _port)
 {
     port = _port;
 }
+
+#ifdef ADD
+void Dialog::showEvent(QShowEvent* )
+{
+
+}
+
+void Dialog::closeEvent(QCloseEvent* e)
+{
+    if (!animation)
+    {
+        qDebug() << "close!";
+        animation = new QPropertyAnimation(this, "windowOpacity");
+        animation->setDuration(1000);
+        animation->setStartValue(1);
+        animation->setEndValue(0);
+
+        connect(animation, SIGNAL(finished()), SLOT(show()));
+        animation->start();
+        e->ignore();
+    }
+    else
+    {
+        delete animation;
+        animation = nullptr;
+        exit(0);
+    }
+}
+#endif
