@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/new/tip">
+        <file>qqSound.wav</file>
+        <file>newImg.wav</file>
+    </qresource>
+</RCC>

@@ -20,6 +20,8 @@
 #include <QMutex>
 #include <QRegularExpression>
 #include <QMap>
+#include <QSound>
+#include <QListWidgetItem>
 
 #include "mytcpclient.h"
 #include "screenwidget.h"

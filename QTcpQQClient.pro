@@ -1,4 +1,4 @@
-QT       += core gui network
+QT       += core gui network multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -37,4 +37,5 @@ DISTFILES +=
 
 RESOURCES += \
     ico.qrc \
-    png.qrc
+    png.qrc \
+    sound.qrc

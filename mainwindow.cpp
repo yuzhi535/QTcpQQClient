@@ -49,6 +49,7 @@ MainWindow::MainWindow(QWidget *parent)
         QMessageBox::information(this, QString("通知"), QString("<h3>" + msg + "</h3>"));
     });
 
+
     grid->setHorizontalSpacing(20);
     grid->setVerticalSpacing(16);
     grid->addWidget(button_1, 14, 4, 2, 2);
@@ -286,6 +287,7 @@ void MainWindow::addInfo()
             str.remove(QRegularExpression(QString("\b.*\b\r")));
             list_1->addItem(str);
             createFile(data, ".txt");
+            QSound::play(":/new/tip/qqSound.wav");
         }
         else if (!str.isEmpty() && (str.at(0) == '\r' || m_flag))
         {
@@ -310,6 +312,7 @@ void MainWindow::addInfo()
 
                     createFile(file, ".png");
                     showImg(file);
+                    QSound::play(":/new/tip/newImg.wav");
                     m_flag = 0;
                     size = 0;
                     recvData.clear();
@@ -325,7 +328,7 @@ void MainWindow::addInfo()
                         m_flag = 0;
                         size = 0;
                         QMessageBox::information(this, QString("通知"), QString("<h1>图片接收失败</h1>"));
-
+                        QSound::play(":/new/tip/newImg.wav");
                     }
                     else
                     {
