@@ -258,11 +258,12 @@ void MainWindow::parseName(QString& msg)
 
 void MainWindow::addInfo()
 {
+    static int m_flag = 0;
     QByteArray data = myClient->readAll();
     if (!data.isNull())
     {
         QString str = data;
-        if (str.at(0) != '\r')
+        if (!str.isEmpty() && str.at(0) != '\r' && !m_flag)
         {
             parseName(str);
 
@@ -293,23 +294,60 @@ void MainWindow::addInfo()
             list_1->addItem(str);
             createFile(data, ".txt");
         }
-        else if (str.at(0) == '\r')
+        else if (!str.isEmpty() && (str.at(0) == '\r' || m_flag))
         {
-            int size = data.size();;
-            int i;
-            for(i = 1; i < data.size() && data.at(i) != '\r'; ++i);
-            size = data.mid(1, i - 1).toInt();
-            qDebug() << "size=" << size;
-            QByteArray file = data.mid(i + 1);
-            qDebug() << "filesize=" << file.size();
-            if (size > file.size())
+            static QByteArray recvData;
+            static int size;
+            if (!m_flag)
             {
-                QMessageBox::information(this, QString("通知"), QString("<h1>图片接收失败</h1>"));
+                size = data.size();;
+                int i;
+                for(i = 1; i < data.size() && data.at(i) != '\r'; ++i);
+                size = data.mid(1, i - 1).toInt();
+                qDebug() << "size=" << size;
+                recvData += data.mid(i + 1);
+                QByteArray& file = recvData;
+                qDebug() << "filesize=" << file.size();
+                if (size > recvData.size())
+                {
+                    ++m_flag;
+                }
+                else
+                {
+
+                    createFile(file, ".png");
+                    showImg(file);
+                    m_flag = 0;
+                    size = 0;
+                    recvData.clear();
+                }
             }
             else
             {
-                createFile(file, ".png");
-                showImg(file);
+                recvData += data;
+                if (size > recvData.size())
+                {
+                    if (m_flag > 5)
+                    {
+                        m_flag = 0;
+                        size = 0;
+                        QMessageBox::information(this, QString("通知"), QString("<h1>图片接收失败</h1>"));
+
+                    }
+                    else
+                    {
+                        ++m_flag;
+                    }
+                }
+                else
+                {
+                    m_flag = 0;
+                    size = 0;
+                    QByteArray& file = recvData;
+                    createFile(file, ".png");
+                    showImg(file);
+                    recvData.clear();
+                }
             }
         }
     }
@@ -368,7 +406,7 @@ void MainWindow::on_button_3_clicked()
     }
 }
 
-void MainWindow::showImg(QByteArray data)
+void MainWindow::showImg(QByteArray& data)
 {
     mutex->lock();
     img.loadFromData(data, "PNG");

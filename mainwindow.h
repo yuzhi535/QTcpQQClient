@@ -39,7 +39,7 @@ public:
     void setSocket(MyTcpClient*& client);
     void createFile(QByteArray& data, QString suffix);
     QString intToString(int num);
-    void showImg(QByteArray img);
+    void showImg(QByteArray& img);
     void parseName(QString& msg);
 
 
