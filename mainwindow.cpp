@@ -40,16 +40,18 @@ MainWindow::MainWindow(QWidget *parent)
     button_4->setText(QString(tr("发送图片")));
     button_1->setShortcut(QString("ctrl+return"));
     button_2->setShortcut(QString("esc"));
+
+    //设置信号槽
     connect(button_2, &QPushButton::clicked, [&] () {close(); exit(0); });
     connect(button_1, &QPushButton::clicked, this, &MainWindow::on_button_1_clicked);
     connect(button_3, &QPushButton::clicked, this, &MainWindow::on_button_3_clicked);
     connect(button_4, &QPushButton::clicked, this, &MainWindow::on_button_4_clicked);
     connect(list_1, &QListWidget::doubleClicked, [&]() {
         QString msg = list_1->currentItem()->text();
-        QMessageBox::information(this, QString("通知"), QString("<h3>" + msg + "</h3>"));
+        QMessageBox::information(this, QString("通知"), QString("<h2>" + msg + "</h2>"));
     });
 
-
+    //设置组件位置
     grid->setHorizontalSpacing(20);
     grid->setVerticalSpacing(16);
     grid->addWidget(button_1, 14, 4, 2, 2);
@@ -61,8 +63,7 @@ MainWindow::MainWindow(QWidget *parent)
     grid->addWidget(button_4, 14, 2, 2, 2);
     grid->addWidget(list_2, 12, 8, 4, 12);
 
-    //设计样式
-
+    //设计组件样式
 
     flag = false;
     screenShot = new QMenu(this);
@@ -284,6 +285,7 @@ void MainWindow::addInfo()
                 }
             }
 
+            //使用正则表达式进行删除多余部分
             str.remove(QRegularExpression(QString("\b.*\b\r")));
             list_1->addItem(str);
             createFile(data, ".txt");
@@ -432,7 +434,7 @@ void MainWindow::on_button_4_clicked()
             tmp.save(&buffer, "PNG");                //做到PNG格式的传输
             auto len = datArray.size();
             QByteArray s;
-            while (len)                             //先发送图片大小，让服务端做好准备
+            while (len)
             {
                 s = (char)(len % 10 + 48) + s;
                 len /= 10;
