@@ -41,10 +41,9 @@ MainWindow::MainWindow(QWidget *parent)
     button_1->setShortcut(QString("ctrl+return"));
     button_2->setShortcut(QString("esc"));
     connect(button_2, &QPushButton::clicked, [&] () {close(); exit(0); });
-    connect(button_1, &QAbstractButton::clicked, this, &MainWindow::on_button_1_clicked);
-    connect(button_3, &QAbstractButton::clicked, this, &MainWindow::on_button_3_clicked);
-    connect(button_4, &QAbstractButton::clicked, this, &MainWindow::on_button_4_clicked);
-
+    connect(button_1, &QPushButton::clicked, this, &MainWindow::on_button_1_clicked);
+    connect(button_3, &QPushButton::clicked, this, &MainWindow::on_button_3_clicked);
+    connect(button_4, &QPushButton::clicked, this, &MainWindow::on_button_4_clicked);
     connect(list_1, &QListWidget::doubleClicked, [&]() {
         QString msg = list_1->currentItem()->text();
         QMessageBox::information(this, QString("通知"), QString("<h3>" + msg + "</h3>"));
@@ -166,15 +165,11 @@ MainWindow::MainWindow(QWidget *parent)
                                                               "地址: https://github.com/yuzhi535/QTcpQQServer</h3>"));
     });
 
-//    this->setStyleSheet("background-color: rgba(50, 50, 50, 0.7)");
-//    list_1->setStyleSheet("background-color: "
-//                          "qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(25, 25, 25, 255), stop:1 rgba(50, 50, 50, 255));");
-
-
-    list_1->setStyleSheet("background-color: rgba(50, 50, 50, 0.5)");
-    list_2->setStyleSheet("background-color: rgba(50, 50, 50, 0.5)");
+    list_1->setStyleSheet("background-color: rgba(50, 50, 50, 0.6)");
+    list_2->setStyleSheet("background-color: rgba(50, 50, 50, 0.6)");
     view->setStyleSheet("background-color: rgba(50, 50, 50, 0.5)");
-    text->setStyleSheet("background-color: rgba(50, 50, 50, 0.6)");
+    text->setStyleSheet("background-color: rgba(50, 50, 50, 0.8); color: rgb(255, 255, 255)");
+    text->setFont(QFont("mono", 12, QFont::Bold));
 
     QPixmap pixmap = QPixmap(":/new/img/wallpaper.png").scaled(this->size());
     QPalette palette(this->palette());
@@ -283,14 +278,12 @@ void MainWindow::addInfo()
                             delete list_2->takeItem(j);   //在界面中删除无用用户
                         }
                     }
-
                     i = users.erase(i);   //删除离开用户
                     --i;
                 }
             }
 
             str.remove(QRegularExpression(QString("\b.*\b\r")));
-
             list_1->addItem(str);
             createFile(data, ".txt");
         }
@@ -351,7 +344,6 @@ void MainWindow::addInfo()
             }
         }
     }
-
 }
 
 void MainWindow::on_button_1_clicked()
