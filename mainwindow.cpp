@@ -64,7 +64,7 @@ MainWindow::MainWindow(QWidget *parent)
     grid->addWidget(list_2, 12, 8, 4, 12);
 
     //设计组件样式
-
+    //设计菜单
     flag = false;
     screenShot = new QMenu(this);
     menu = new QMenu(this);
@@ -314,7 +314,6 @@ void MainWindow::addInfo()
 
                     createFile(file, ".png");
                     showImg(file);
-                    QSound::play(":/new/tip/newImg.wav");
                     m_flag = 0;
                     size = 0;
                     recvData.clear();
@@ -362,9 +361,15 @@ void MainWindow::on_button_1_clicked()
     else if (myClient->state() == QTcpSocket::ConnectedState)
     {
         QString str = text->toPlainText();
-        qDebug() << str;
-        myClient->write(str.toUtf8());
-        text->clear();
+        if (str == "")
+        {
+            QMessageBox::information(this, "通知", "<h2>您还未写入任何内容!</h2>");
+        }
+        else
+        {
+            myClient->write(str.toUtf8());
+            text->clear();
+        }
     }
     else
     {
