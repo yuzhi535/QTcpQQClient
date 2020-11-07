@@ -172,19 +172,24 @@ MainWindow::MainWindow(QWidget *parent)
     {
         file.open(QFile::ReadOnly);
         list_1->setStyleSheet(file.readAll());
+        list_1->setFont(QFont("mono", 12, QFont::Bold));
+        file.close();
     }
-
+    else
+    {
+        QMessageBox::information(this, "通知", "not impossible");
+        close();
+        exit(0);
+    }
     list_2->setStyleSheet("background-color: rgba(50, 50, 50, 0.6)");
     view->setStyleSheet("background-color: rgba(50, 50, 50, 0.5)");
     text->setStyleSheet("background-color: rgba(50, 50, 50, 0.8); color: rgb(255, 255, 255)");
     text->setFont(QFont("mono", 12, QFont::Bold));
 
-
     QPixmap pixmap = QPixmap(":/new/img/wallpaper.png").scaled(this->size());
     QPalette palette(this->palette());
     palette.setBrush(QPalette::Background, QBrush(pixmap));
     this->setPalette(palette);
-
 }
 
 
@@ -295,9 +300,6 @@ void MainWindow::addInfo()
             //使用正则表达式进行删除多余部分
             str.remove(QRegularExpression(QString("\b.*\b\r")));
             list_1->addItem(str);
-
-
-
             createFile(data, ".txt");
             QSound::play(":/new/tip/qqSound.wav");
         }
