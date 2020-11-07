@@ -167,11 +167,18 @@ MainWindow::MainWindow(QWidget *parent)
                                                               "地址: https://github.com/yuzhi535/QTcpQQServer</h3>"));
     });
 
-    list_1->setStyleSheet("background-color: rgba(50, 50, 50, 0.6)");
+    QFile file(":/new/qss/listWidget.qss");
+    if (file.exists())
+    {
+        file.open(QFile::ReadOnly);
+        list_1->setStyleSheet(file.readAll());
+    }
+
     list_2->setStyleSheet("background-color: rgba(50, 50, 50, 0.6)");
     view->setStyleSheet("background-color: rgba(50, 50, 50, 0.5)");
     text->setStyleSheet("background-color: rgba(50, 50, 50, 0.8); color: rgb(255, 255, 255)");
     text->setFont(QFont("mono", 12, QFont::Bold));
+
 
     QPixmap pixmap = QPixmap(":/new/img/wallpaper.png").scaled(this->size());
     QPalette palette(this->palette());
@@ -288,6 +295,9 @@ void MainWindow::addInfo()
             //使用正则表达式进行删除多余部分
             str.remove(QRegularExpression(QString("\b.*\b\r")));
             list_1->addItem(str);
+
+
+
             createFile(data, ".txt");
             QSound::play(":/new/tip/qqSound.wav");
         }
@@ -354,6 +364,7 @@ void MainWindow::on_button_1_clicked()
 {
     if (myClient == nullptr)
     {
+        QSound::play(":new/tip/newImg.wav");
         QMessageBox::warning(this, "错误", "不能连接到服务端，即将关闭");
         close();
         exit(0);
@@ -458,6 +469,7 @@ void MainWindow::on_button_4_clicked()
     }
     else
     {
+        QSound::play(":/new/tip/newImg.wav");
         QMessageBox::warning(this, "警告", "<h1>您还没有选择任何图片</h1>");
     }
 }

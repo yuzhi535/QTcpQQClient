@@ -1,0 +1,23 @@
+QListWidget {
+    show-decoration-selected: 1;
+    background-color: rgba(50, 50, 50, 0.6); 
+    selection-color:  #cd6155
+} 
+QListWidget::item:alternate {
+    background: #EEEEEE;
+}
+QListWidget::item:selected {
+    border: 1px solid #6a6ea9;
+}
+QListWidget::item:selected:!active {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #f9e79f, stop: 1 #d4ac0d);
+}
+QListWidget::item:selected:active {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0  #fcf3cf, stop: 1 #2ecc71);
+}
+QListWidget::item:hover {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #5dade2 , stop: 1  #2e86c1);
+}

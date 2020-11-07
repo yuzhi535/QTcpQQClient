@@ -38,4 +38,5 @@ DISTFILES +=
 RESOURCES += \
     ico.qrc \
     png.qrc \
+    qss/style.qrc \
     sound.qrc
