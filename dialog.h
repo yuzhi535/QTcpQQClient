@@ -18,6 +18,7 @@ class Dialog;
 
 /**
  * @brief The Dialog class
+ *
  */
 class Dialog : public QDialog
 {

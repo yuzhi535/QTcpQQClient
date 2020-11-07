@@ -16,7 +16,6 @@ Dialog::Dialog(QWidget *parent) :
 
 }
 
-#include <iostream>
 Dialog::~Dialog()
 {
     delete ui;

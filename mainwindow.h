@@ -31,6 +31,13 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
+/**
+ * @brief The MainWindow class
+ * @note the main wodow to show the chat info
+ * @todo the bubble tip
+ * @warning none
+ * @date 2020.10.18
+ */
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -66,7 +73,7 @@ private:
     QPushButton* button_2;
     QPushButton* button_3;
     QPushButton* button_4;
-    QGridLayout* grid;
+    QGridLayout* grid;     //main layout
 
     QPixmap img;
 

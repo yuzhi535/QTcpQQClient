@@ -7,6 +7,7 @@
 
 /**
  * @brief The MyTcpClient class
+ * @note record the info of the user
  */
 class MyTcpClient : public QTcpSocket
 {
