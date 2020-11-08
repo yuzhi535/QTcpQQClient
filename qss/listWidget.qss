@@ -4,7 +4,7 @@ QListWidget {
     selection-color:  #cd6155
 } 
 QListWidget::item:alternate {
-    background: #EEEEEE;
+    background: #d98f8f;
 }
 QListWidget::item:selected {
     border: 1px solid #6a6ea9;

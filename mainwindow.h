@@ -79,9 +79,9 @@ private:
 
     MyTcpClient* myClient = nullptr;
 
-    bool flag;
+    bool flag;     //decide whether to show the image
 
-    QMap<QString, int> users;
+    QMap<QString, int> users;    //record users
 
     QMenu* menu;
     QAction* about;
@@ -89,7 +89,7 @@ private:
     QAction* shot;
     QAction* hideShot;
 
-    QMutex* mutex;
+    QMutex* mutex;   //lock and unlock
 
 };
 #endif // MAINWINDOW_H
