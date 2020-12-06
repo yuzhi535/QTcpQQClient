@@ -299,6 +299,8 @@ void MainWindow::addInfo()
 
             //使用正则表达式进行删除多余部分
             str.remove(QRegularExpression(QString("\b.*\b\r")));
+            str.insert(str.size(), 'a');
+
             list_1->addItem(str);
             createFile(data, ".txt");
             QSound::play(":/new/tip/qqSound.wav");
@@ -323,7 +325,6 @@ void MainWindow::addInfo()
                 }
                 else
                 {
-
                     createFile(file, ".png");
                     showImg(file);
                     m_flag = 0;
